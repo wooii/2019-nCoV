@@ -84,7 +84,8 @@ server <- function(input, output) {
         predicted <- data.frame(predicted, 
                                 days = 1:(n + m),
                                 confirmed = c(d0$confirmed, rep(NA, m)))
-        ggplot(predicted, aes(days, confirmed, colour = "confirmed")) +
+        dates <- c(dates, tail(dates, 1) + 1:m)
+        ggplot(predicted, aes(dates, confirmed, colour = "confirmed")) +
             geom_point() +
             stat_smooth() +
             geom_line(aes(y = y, colour = "predicted")) +
@@ -93,12 +94,12 @@ server <- function(input, output) {
             geom_line(aes(y = y.right, colour = "predicted 95% CI"),
                       linetype = "dotted") +
             scale_color_manual(values = c( "blue", "red", "red")) +
-            scale_x_continuous(breaks = seq(from = 1, to = n + m, by = 1)) +
+            scale_x_date(date_breaks = "1 day", date_labels = "%m-%d") +
             labs(title = paste("Predict for 2019-nCoV infection cases (", 
-                               dates[1], " - ", tail(dates, 1), ")",
+                               dates[1], " - ", tail(dates, 1) + m, ")",
                                sep = ""),
                  y = "Number of cases",
-                 x = "Days",
+                 x = "Date",
                  color = "Class") +
             theme(legend.position = "right")
     })

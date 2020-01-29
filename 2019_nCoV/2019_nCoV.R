@@ -45,34 +45,34 @@ n <- NROW(d0)
 # v <- c("确诊 (confirmed)", "重症 (hospital)", "死亡 (dead)", "治愈 (healed)",
 #        "疑似 (suspected)", "密切接触者 (contacted)")
 
-d1 <- d0[2:8]
+d1 <- d0[c(1, 3:8)]
 # colnames(d1)[2:7] <- v
-d.melt <- reshape2::melt(d1, id = "days")
+d.melt <- reshape2::melt(d1, id = "date")
 
-d2 <- data.frame(days = d0$days, log2(d0[3:8]))
+d2 <- data.frame(date = dates, log2(d0[3:8]))
 # colnames(d2)[2:7] <- v
-d.log2.melt <- reshape2::melt(d2, id = "days")
+d.log2.melt <- reshape2::melt(d2, id = "date")
 
 
 # Plots -----------------------------------------------------------------------
 
 # First plot.
-plot1 <- ggplot(data = d.melt, aes(x = days, value, colour = variable)) + 
+plot1 <- ggplot(data = d.melt, aes(x = date, value, colour = variable)) + 
   geom_point() + 
   labs(title = paste("2019-nCoV data (", dates[1], " - ", tail(dates, 1), ")",
                      sep = ""),
        y = "Number of cases",
        color = "Class") +
-  scale_x_continuous(breaks = seq(from = 1, to = n, by = 1)) +
+  scale_x_date(date_breaks = "1 day", date_labels = "%m-%d") +
   theme(legend.position = "right",
         axis.title.x = element_blank(),
         axis.text.x = element_blank())
-plot2 <- ggplot(data = d.log2.melt, aes(x = days, value, colour = variable)) + 
+plot2 <- ggplot(data = d.log2.melt, aes(x = date, value, colour = variable)) + 
   geom_line() + 
-  labs(x = "Days",
+  labs(x = "Date",
        y = "log2(Number of cases)",
        color = "Class") +
-  scale_x_continuous(breaks = seq(from = 1, to = n, by = 1)) +
+  scale_x_date(date_breaks = "1 day", date_labels = "%m-%d") +
   theme(legend.position = "right")
 p1 <- egg::ggarrange(plots = list(plot1, plot2), 
                      nrow = 2, heights = c(1, 1))
