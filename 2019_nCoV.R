@@ -145,7 +145,7 @@ ggplot(predicted, aes(days, confirmed)) +
   geom_line(aes(y = y.right, colour = "y.right")) +
   labs(x = "天数 (days)",
        y = "y = log2(Number of people) \n log2(人数)") +
-  scale_x_continuous(breaks = seq(from = 1, to = n, by = 1)) +
+  scale_x_continuous(breaks = seq(from = 1, to = n + m, by = 1)) +
   theme(legend.position = "right")
 
 
