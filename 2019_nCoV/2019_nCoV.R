@@ -5,14 +5,14 @@
 # Author: Chenfeng Chen
 # Created on 2020-01-29
 
-
-# Functions -------------------------------------------------------------------
-
 library(shiny)
 library(readr)
 library(ggplot2)
 library(ggpubr)
 library(egg)
+
+
+# Functions -------------------------------------------------------------------
 
 log2_lm_predict <- function(lm.model, x.predict, ci.level = 0.95) {
   # Calculate the predict value and its confidence interval for the log2 

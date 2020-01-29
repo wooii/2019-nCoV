@@ -11,8 +11,8 @@ library(ggpubr)
 library(egg)
 source("2019_nCoV.R")
 
+
 ui <- fluidPage(
-    
     # Application title.
     titlePanel("The 2019-nCoV epidemic data analysis and prediction"),
     
