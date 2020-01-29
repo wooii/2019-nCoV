@@ -63,7 +63,8 @@ plot1 <- ggplot(data = d.melt, aes(x = date, value, colour = variable)) +
                      sep = ""),
        y = "Number of cases",
        color = "Class") +
-  scale_x_date(date_breaks = "1 day", date_labels = "%m-%d") +
+  scale_x_date(date_breaks = "1 day", date_labels = "%m-%d",
+               minor_breaks = NULL) +
   theme(legend.position = "right",
         axis.title.x = element_blank(),
         axis.text.x = element_blank())
@@ -72,8 +73,11 @@ plot2 <- ggplot(data = d.log2.melt, aes(x = date, value, colour = variable)) +
   labs(x = "Date",
        y = "log2(Number of cases)",
        color = "Class") +
-  scale_x_date(date_breaks = "1 day", date_labels = "%m-%d") +
-  theme(legend.position = "right")
+  scale_x_date(date_breaks = "1 day", date_labels = "%m-%d",
+               minor_breaks = NULL) +
+  theme(legend.position = "right",
+        axis.text.x = element_text(angle = 90, hjust = 0.5))
+
 p1 <- egg::ggarrange(plots = list(plot1, plot2), 
                      nrow = 2, heights = c(1, 1))
 

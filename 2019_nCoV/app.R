@@ -94,14 +94,16 @@ server <- function(input, output) {
             geom_line(aes(y = y.right, colour = "predicted 95% CI"),
                       linetype = "dotted") +
             scale_color_manual(values = c( "blue", "red", "red")) +
-            scale_x_date(date_breaks = "1 day", date_labels = "%m-%d") +
+            scale_x_date(date_breaks = "1 day", date_labels = "%m-%d",
+                         minor_breaks = NULL) +
             labs(title = paste("Predict for 2019-nCoV infection cases (", 
                                dates[1], " - ", tail(dates, 1) + m, ")",
                                sep = ""),
                  y = "Number of cases",
                  x = "Date",
                  color = "Class") +
-            theme(legend.position = "right")
+            theme(legend.position = "right",
+                  axis.text.x = element_text(angle = 90, hjust = 0.5))
     })
 }
 
