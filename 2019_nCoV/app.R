@@ -24,7 +24,7 @@ ui <- fluidPage(
         mainPanel(
             plotOutput("distPlot1"),
             strong("Figure 1. Display the epidemic data of 2019-nCoV in 
-            China (up), and in its log2 form."),
+                   China."),
             p("The upper plot displays the number of cases in each group
               labeled as confirmed 2019-nCoV infection patients (confirmed), 
               inpatients with severe conditions (hospital), dead patients due
@@ -96,9 +96,7 @@ server <- function(input, output) {
             scale_color_manual(values = c( "blue", "red", "red")) +
             scale_x_date(date_breaks = "1 day", date_labels = "%m-%d",
                          minor_breaks = NULL) +
-            labs(title = paste("Predict for 2019-nCoV infection cases (", 
-                               dates[1], " - ", tail(dates, 1) + m, ")",
-                               sep = ""),
+            labs(title = "Predict for the number of 2019-nCoV infection cases",
                  y = "Number of cases",
                  x = "Date",
                  color = "Class") +

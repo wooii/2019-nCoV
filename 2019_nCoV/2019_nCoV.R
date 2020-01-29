@@ -59,8 +59,7 @@ d.log2.melt <- reshape2::melt(d2, id = "date")
 # First plot.
 plot1 <- ggplot(data = d.melt, aes(x = date, value, colour = variable)) + 
   geom_point() + 
-  labs(title = paste("2019-nCoV data (", dates[1], " - ", tail(dates, 1), ")",
-                     sep = ""),
+  labs(title = "2019-nCoV epidemic data in China",
        y = "Number of cases",
        color = "Class") +
   scale_x_date(date_breaks = "1 day", date_labels = "%m-%d",
@@ -87,9 +86,8 @@ d0$confirmed.log <- log2(d0$confirmed)
 plot3 <- ggplot(d0, aes(days, confirmed)) +
   geom_point() +
   geom_smooth() +
-  labs(title = paste("2019-nCoV confirmed infection cases (", 
-                     dates[1], " - ", tail(dates, 1), ")",
-                     sep = ""),
+  labs(title = "2019-nCoV confirmed infection cases in China",
+       subtitle = paste(dates[1], " - ", tail(dates, 1), sep = ""),
        y = "Number of cases",
        color = "Class") +
   scale_x_continuous(breaks = seq(from = 1, to = n, by = 1)) +
