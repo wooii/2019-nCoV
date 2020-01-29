@@ -3,12 +3,6 @@
 # Author: Chenfeng Chen
 # Created on 2020-01-29
 
-
-library(shiny)
-library(readr)
-library(ggplot2)
-library(ggpubr)
-library(egg)
 source("2019_nCoV.R")
 
 
@@ -31,14 +25,14 @@ ui <- fluidPage(
             plotOutput("distPlot1"),
             strong("Figure 1. Display the epidemic data of 2019-nCoV in 
             China (up), and in its log2 form."),
-            p("The upper plot displays the number of people in each group
-              labeled as confirmed 2019-nCoV infection patient (confirmed), 
-              inpatient with severe conditions (hospital), dead due to 
-              2019-nCoV (dead), patient recovered from the infection (healed),
-              people who is suspected to be infected but not yet
-              confirmed (suspected), people who may have recent close contact
-              with the confirmed infected patients (contacted). The lower plot
-              displays the same result after log2 treatment."),
+            p("The upper plot displays the number of cases in each group
+              labeled as confirmed 2019-nCoV infection patients (confirmed), 
+              inpatients with severe conditions (hospital), dead patients due
+              to 2019-nCoV infection (dead), patients recovered from the
+              infection (healed), people who were suspected to be infected
+              but not yet confirmed (suspected), people who might have recent
+              close contact with the confirmed infected patients (contacted). 
+              The lower plot displays the same result after log2 treatment."),
             br(),
             br(),
             plotOutput("distPlot2"),
@@ -46,7 +40,10 @@ ui <- fluidPage(
             cases of 2019-nCoV in China is exponential so far."),
             p("The blue line is the best fitting curve for confirmed number of
             infection cases of 2019-nCoV in China and the grey range is its
-            95% confidence interval."),
+            95% confidence interval. The upper plot displays the number of 
+            confirmed 2019-nCoV infection cases. The lower plot displays the 
+            same result after its log2 treatment, and the formula is calculated
+            by using linear regression. "),
             br(),
             br(),
             plotOutput("distPlot3"),
@@ -100,7 +97,7 @@ server <- function(input, output) {
             labs(title = paste("Predict for 2019-nCoV infection cases (", 
                                dates[1], " - ", tail(dates, 1), ")",
                                sep = ""),
-                 y = "Number of people",
+                 y = "Number of cases",
                  x = "Days",
                  color = "Class") +
             theme(legend.position = "right")

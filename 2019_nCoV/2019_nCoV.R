@@ -61,7 +61,7 @@ plot1 <- ggplot(data = d.melt, aes(x = days, value, colour = variable)) +
   geom_point() + 
   labs(title = paste("2019-nCoV data (", dates[1], " - ", tail(dates, 1), ")",
                      sep = ""),
-       y = "Number of people",
+       y = "Number of cases",
        color = "Class") +
   scale_x_continuous(breaks = seq(from = 1, to = n, by = 1)) +
   theme(legend.position = "right",
@@ -70,7 +70,7 @@ plot1 <- ggplot(data = d.melt, aes(x = days, value, colour = variable)) +
 plot2 <- ggplot(data = d.log2.melt, aes(x = days, value, colour = variable)) + 
   geom_line() + 
   labs(x = "Days",
-       y = "log2(Number of people)",
+       y = "log2(Number of cases)",
        color = "Class") +
   scale_x_continuous(breaks = seq(from = 1, to = n, by = 1)) +
   theme(legend.position = "right")
@@ -86,7 +86,7 @@ plot3 <- ggplot(d0, aes(days, confirmed)) +
   labs(title = paste("2019-nCoV confirmed infection cases (", 
                      dates[1], " - ", tail(dates, 1), ")",
                      sep = ""),
-       y = "Number of people",
+       y = "Number of cases",
        color = "Class") +
   scale_x_continuous(breaks = seq(from = 1, to = n, by = 1)) +
   theme(legend.position = "right",
@@ -100,12 +100,8 @@ plot4 <- ggplot(d0, aes(days, confirmed.log)) +
     formula = y ~ x) +
   stat_cor(label.x = 1, label.y = 11) +
   labs(x = "Days",
-       y = "y = log2(Number of people)") +
+       y = "y = log2(Number of cases)") +
   scale_x_continuous(breaks = seq(from = 1, to = n, by = 1)) +
   theme(legend.position = "right")
 p2 <- egg::ggarrange(plots = list(plot3, plot4), 
                      nrow = 2, heights = c(1, 1))
-
-
-
-
