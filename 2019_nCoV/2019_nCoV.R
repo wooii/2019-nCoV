@@ -38,6 +38,7 @@ log2_lm_predict <- function(lm.model, x.predict, ci.level = 0.95) {
 # Load data -------------------------------------------------------------------
 
 d0 <- readr::read_csv("2019_nCoV_data.csv")
+# d0 <- readr::read_csv("2019_nCoV/2019_nCoV_data.csv") # for local test.
 dates <- d0$date
 n <- NROW(d0)
 
@@ -57,7 +58,7 @@ d.log2.melt <- reshape2::melt(d2, id = "date")
 # Plots -----------------------------------------------------------------------
 
 # First plot.
-plot1 <- ggplot(data = d.melt, aes(x = date, value, colour = variable)) + 
+p1 <- ggplot(data = d.melt, aes(x = date, value, colour = variable)) + 
   geom_point() + 
   labs(title = "2019-nCoV epidemic data in China",
        y = "Number of cases",
@@ -67,7 +68,7 @@ plot1 <- ggplot(data = d.melt, aes(x = date, value, colour = variable)) +
   theme(legend.position = "right",
         axis.title.x = element_blank(),
         axis.text.x = element_blank())
-plot2 <- ggplot(data = d.log2.melt, aes(x = date, value, colour = variable)) + 
+p2 <- ggplot(data = d.log2.melt, aes(x = date, value, colour = variable)) + 
   geom_line() + 
   labs(x = "Date",
        y = "log2(Number of cases)",
@@ -77,33 +78,28 @@ plot2 <- ggplot(data = d.log2.melt, aes(x = date, value, colour = variable)) +
   theme(legend.position = "right",
         axis.text.x = element_text(angle = 90, hjust = 0.5))
 
-p1 <- egg::ggarrange(plots = list(plot1, plot2), 
+plot1 <- egg::ggarrange(plots = list(p1, p2), 
                      nrow = 2, heights = c(1, 1))
 
 
 # Second plot.
-d0$confirmed.log <- log2(d0$confirmed)
-plot3 <- ggplot(d0, aes(days, confirmed)) +
+l <- log2(d0$confirmed)
+d0$confirmed.log <- l
+l.max <- max(l, na.rm = T)
+l.min <- min(l, na.rm = T)
+
+plot2 <- ggplot(d0, aes(days, confirmed.log)) +
   geom_point() +
-  geom_smooth() +
-  labs(title = "2019-nCoV confirmed infection cases in China",
-       subtitle = paste(dates[1], " - ", tail(dates, 1), sep = ""),
-       y = "Number of cases",
-       color = "Class") +
-  scale_x_continuous(breaks = seq(from = 1, to = n, by = 1)) +
-  theme(legend.position = "right",
-        axis.title.x = element_blank(),
-        axis.text.x = element_blank())
-plot4 <- ggplot(d0, aes(days, confirmed.log)) +
-  geom_point() +
-  stat_smooth() +
+  stat_smooth(formula = y ~ x, method = "lm", level = 0.99) +
   stat_regline_equation(
     aes(label =  paste(..eq.label.., ..adj.rr.label.., sep = "~~~~")),
-    formula = y ~ x) +
-  stat_cor(label.x = 1, label.y = 11) +
-  labs(x = "Days",
+    formula = y ~ x,
+    label.x = 1, label.y = l.max) +
+  stat_cor(label.x = 1, label.y = l.min + 0.8*(l.max - l.min)) +
+  labs(title = "2019-nCoV confirmed infection cases in China",
+       subtitle = paste(dates[1], " - ", tail(dates, 1), sep = ""),
+       x = "Days",
        y = "y = log2(Number of cases)") +
   scale_x_continuous(breaks = seq(from = 1, to = n, by = 1)) +
   theme(legend.position = "right")
-p2 <- egg::ggarrange(plots = list(plot3, plot4), 
-                     nrow = 2, heights = c(1, 1))
+

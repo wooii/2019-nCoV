@@ -40,7 +40,7 @@ ui <- fluidPage(
             cases of 2019-nCoV in China is exponential so far."),
             p("The blue line is the best fitting curve for confirmed number of
             infection cases of 2019-nCoV in China and the grey range is its
-            95% confidence interval. The upper plot displays the number of 
+            99% confidence interval. The upper plot displays the number of 
             confirmed 2019-nCoV infection cases. The lower plot displays the 
             same result after its log2 treatment, and the formula is calculated
             by using linear regression. "),
@@ -70,8 +70,8 @@ ui <- fluidPage(
 # Define server logic.
 server <- function(input, output) {
     
-    output$distPlot1 <- renderPlot(p1)
-    output$distPlot2 <- renderPlot(p2)
+    output$distPlot1 <- renderPlot(plot1)
+    output$distPlot2 <- renderPlot(plot2)
     
     # Make prediction.
     output$distPlot3 <- renderPlot({
@@ -87,7 +87,6 @@ server <- function(input, output) {
         dates <- c(dates, tail(dates, 1) + 1:m)
         ggplot(predicted, aes(dates, confirmed, colour = "confirmed")) +
             geom_point() +
-            stat_smooth() +
             geom_line(aes(y = y, colour = "predicted")) +
             geom_line(aes(y = y.left, colour = "predicted 95% CI"),
                       linetype = "dotted") +
