@@ -51,8 +51,7 @@ ui <- fluidPage(
             2019-nCoV in China in the next few days."),
             p("Please indicate how many days in the future to predict using
               the slider bar. The blue point is the confirmed number of 
-              infection cases, the blue line is its best fitting and its 95% 
-              confidence intervals (grey area). The red line is the predicted
+              infection cases. The red line is the predicted
               number of infection cases using the formula derived from 
               Figure 2, and the dotted red line is its 95% confidence 
               intervals (CI)."),
