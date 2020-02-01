@@ -37,43 +37,31 @@ log2_lm_predict <- function(lm.model, x.predict, ci.level = 0.95) {
 }
 
 
-log2_lm_predict1 <- function(df.seg, bp, x.predict, ci.level = 0.95) {
-  # Calculate the predict value and its confidence interval for the log2 
-  #   linear model.
-  # df.seg: a dataframe return by 
-  # x.predict: a vector contains the values of x for prediction of y using the 
-  #   lm.model.
-  # ci.levle: the confidence interval levels for the predicted y.
-  pp <- c(0, bp, length(x.predict))
-  
-  pp1 <- c(NA, pp[-length(pp)])
-  
-  mm <- as.numeric(round(na.omit(pp - pp1)))
-  
-  rep
-  sapply(mm, rep, 0)
-  
-  lm.summary <- summary(lm.model)
-  a <- lm.summary$coefficients[1, 1]
-  b <- lm.summary$coefficients[2, 1]
-  a.se <- lm.summary$coefficients[1, 2]
-  b.se <- lm.summary$coefficients[2, 2]
-  # Choose confidence interval level.
-  ci <- qnorm((1 - ci.level)/2, mean = 0, sd = 1, lower.tail = F)
-  y <- 2^(a + b*x.predict)
-  y.left <- 2^(a - ci*a.se + (b - ci*b.se)*x.predict)
-  y.right <- 2^(a + ci*a.se + (b + ci*b.se)*x.predict)
-  return(data.frame(y, y.left, y.right))
-}
-
-
 R2_p <- function(r2, p){
   # Display the R2 and p values in Figure 2.
+  # r2: the value of r2.
+  # p: the value of p
+  # Return: an character that can be displayed in ggplot2 with geom_text().
   eq <- substitute(R^2~"="~r2~ ","~~P~"="~p,
                    list(r2 = format(r2, digits = 3),
                         p = format(p, digits = 3)))
   
   y <- as.character(as.expression(eq))
+  return(y)
+}
+
+
+x_range <- function(x, n) {
+  # To calculate the x.range for the tabel under Figure 2.
+  # x: a vector of breakpoint.
+  # n: the number of rows of the raw data, i.e. n = NROW(d)
+  # Return: a character vector contains the range of x for piecewise linear
+  #   regression.
+  pp <- c(1, round(x, 1), n)
+  y <- vector()
+  for (i in 2:length(pp)) {
+    y[i - 1] <- paste(pp[i - 1], "<=", "x", "<=", pp[i], sep = " ")
+  }
   return(y)
 }
 
@@ -92,7 +80,8 @@ n <- NROW(d) # Number of days.
 d.melt <- reshape2::melt(d, id = "date")
 d.log2.melt <- reshape2::melt(d.log2, id = "date")
 
-d$days <- 1:n # Add days.
+days <- 1:n
+d$days <- days # Add days.
 
 # This solves the incorrect display of date problem in shiny renderTable().
 d0 <- d
@@ -100,7 +89,6 @@ d0$date <- as.character(d0$date)
 
 
 # First plot ------------------------------------------------------------------
-
 
 p1 <- ggplot(data = d.melt, aes(x = date, value, colour = variable)) + 
   geom_point() + 
@@ -122,5 +110,5 @@ p2 <- ggplot(data = d.log2.melt, aes(x = date, value, colour = variable)) +
   theme(legend.position = "right",
         axis.text.x = element_text(angle = 90, hjust = 0.5))
 plot1 <- egg::ggarrange(plots = list(p1, p2), 
-                     nrow = 2, heights = c(1, 1))
+                        nrow = 2, heights = c(1, 1))
 
