@@ -14,38 +14,19 @@ ui <- fluidPage(
     # Sidebar for input.
     sidebarLayout(
         sidebarPanel(
-            width = 4,    
-            radioButtons(inputId = "group", 
-                         label = "Choose a group for Figure 2:",
-                         choices = group.names,
-                         selected = group.names[1]),
-            sliderInput(inputId = "n.seg",
-                        label = "Select number of segments for Figure 2:",
-                        min = 1,
-                        max = floor(n/5),
-                        value = 1,
-                        step = 1),
-            sliderInput(inputId = "m",
-                        label = "Select number of days to predict from 
-                        the most recent date for Figure 3:",
-                        min = 1,
-                        max = 5,
-                        value = 2)
+            width = 0,    
+            strong("Signs of slowing down of the exponential growth of the
+            2019-nCoV outbreak in China.")
         ),
         
         # Show results.
         mainPanel(
             width = 8,
-            strong("Signs of slowing down of the exponential growth of the
-            2019-nCoV outbreak in China."),
-            br(),
-            br(),
             p("The data used in this analysis is fetched from the", 
               a(href = "http://www.nhc.gov.cn/",
                 "the Nathinal Health Commission of 
                 the People's Republic of China (NHC)"), ".", 
               "The data is updated daily on NHC's website."),
-            br(),
             br(),
             tabsetPanel(
                 tabPanel("Plot", plotOutput("distPlot1")),
@@ -66,8 +47,17 @@ ui <- fluidPage(
               The lower plot displays the log2-transformed results. Please
               click the 'Data' tab for detailed raw data"),
             br(),
-            br(),
             plotOutput("distPlot2"),
+            sliderInput(inputId = "n.seg",
+                        label = "Select number of segments for Figure 2:",
+                        min = 1,
+                        max = floor(n/5),
+                        value = 1,
+                        step = 1),
+            radioButtons(inputId = "group", 
+                         label = "Choose a group for Figure 2 and Figure 3:",
+                         choices = group.names,
+                         selected = group.names[1]),
             strong("Figure 2. Growth of the reported number of the cases in the
             selected group."),
             p("The balck points are the log2-transformed reported number of the
@@ -85,7 +75,6 @@ ui <- fluidPage(
             number of breakpoints can be selected on the slider bar."),
             tableOutput('df.seg'),
             br(),
-            br(),
             plotOutput("distPlot3"),
             strong("Figure 3. Prediction of the reported number of the cases in
             the selected group in the next few days."),
@@ -96,7 +85,12 @@ ui <- fluidPage(
             95% confidence intervals (CI). Please indicate how many days in the
             future to predict for the reported number of the cases in the
             selected group using the slider bar."),
-            br(),
+            sliderInput(inputId = "m",
+                        label = "Select number of days to predict from 
+                        the most recent date for Figure 3:",
+                        min = 1,
+                        max = 5,
+                        value = 2),
             br(),
             p("For more details, please refer to the source code of this app
               on GitHub,", a(href = "https://github.com/wooii/2019-nCoV", 
