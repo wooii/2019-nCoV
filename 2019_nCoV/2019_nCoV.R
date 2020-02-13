@@ -92,6 +92,7 @@ d0$date <- as.character(d0$date)
 
 p1 <- ggplot(data = d.melt, aes(x = date, value, colour = variable)) + 
   geom_point() + 
+  geom_line() + 
   labs(title = "2019-nCoV epidemic data in China",
        y = "Number of cases",
        colour = "Group") +
@@ -101,6 +102,7 @@ p1 <- ggplot(data = d.melt, aes(x = date, value, colour = variable)) +
         axis.title.x = element_blank(),
         axis.text.x = element_blank())
 p2 <- ggplot(data = d.log2.melt, aes(x = date, value, colour = variable)) + 
+  geom_point() + 
   geom_line() + 
   labs(x = "Date",
        y = "log2(Number of cases)",
